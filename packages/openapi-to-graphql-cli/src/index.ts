@@ -175,7 +175,7 @@ function readFile(path): Oas3 {
   if (/json$/.test(path)) {
     return JSON.parse(fs.readFileSync(path, 'utf8'))
   } else if (/yaml$/.test(path) || /yml$/.test(path)) {
-    return yaml.safeLoad(fs.readFileSync(path, 'utf8'))
+    return yaml.load(fs.readFileSync(path, 'utf8')) as Oas3
   } else {
     throw new Error(
       `Failed to parse JSON/YAML. Ensure file '${path}' has ` +
@@ -201,7 +201,7 @@ async function getRemoteFileSpec(uri): Promise<Oas3> {
         return JSON.parse(body)
       } catch (e) {
         try {
-          return yaml.safeLoad(body)
+          return yaml.load(body) as Oas3
         } catch (f) {
           console.error(`JSON parse error: ${e}\nYAML parse error: ${f}`)
         }
