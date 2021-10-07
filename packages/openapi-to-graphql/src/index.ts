@@ -197,6 +197,7 @@ export function translateOpenAPIToGraphQL<TSource, TContext, TArgs>(
     baseUrl,
     customResolvers,
     customSubscriptionResolvers,
+    resultFieldModifier,
 
     // Authentication options
     viewer,
@@ -238,6 +239,7 @@ export function translateOpenAPIToGraphQL<TSource, TContext, TArgs>(
     baseUrl,
     customResolvers,
     customSubscriptionResolvers,
+    resultFieldModifier,
 
     // Authentication options
     viewer,

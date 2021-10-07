@@ -740,7 +740,9 @@ export function getResolver<TSource, TContext, TArgs>({
               httpLog(errorString)
               throw new Error(errorString)
             }
-
+            if(data.options?.resultFieldModifier && data.options.resultFieldModifier[title] && data.options.resultFieldModifier[title][path]){
+              responseBody = data.options.resultFieldModifier[title][path](responseBody);
+            }
             resolveData.responseHeaders = {}
             response.headers.forEach((val, key) => {
               resolveData.responseHeaders[key] = val
@@ -753,7 +755,7 @@ export function getResolver<TSource, TContext, TArgs>({
                 ? Oas3Tools.CaseStyle.camelCase
                 : Oas3Tools.CaseStyle.simple
             )
-
+              
             // Pass on _openAPIToGraphQL to subsequent resolvers
             if (saneData && typeof saneData === 'object') {
               if (Array.isArray(saneData)) {

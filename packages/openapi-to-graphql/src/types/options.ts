@@ -339,6 +339,11 @@ export type InternalOptions<TSource, TContext, TArgs> = {
    */
   equivalentToMessages: boolean
 
+  resultFieldModifier?: {
+    [title: string]: {
+        [path: string]: (responseBody:any) =>  any;
+    }
+  };
   /**
    * Custom W3 Compatible `fetch` implementation
    */
