@@ -653,7 +653,13 @@ export function getResolver<TSource, TContext, TArgs>({
 
     let response: Response
     try {
-      response = await fetch(url.toString(), options)
+      if(data.options?.customizeHandlers[title][path]?.beforeFetch && 
+        typeof data.options.customizeHandlers[title][path].beforeFetch === 'function'){
+        const fetchArgs = data.options.customizeHandlers[title][path].beforeFetch({url, options});
+        response = await fetch(fetchArgs.url.toString(), fetchArgs.options)
+      }else{
+        response = await fetch(url.toString(), options)
+      }
     } catch (err) {
       httpLog(err)
       throw err
@@ -740,8 +746,9 @@ export function getResolver<TSource, TContext, TArgs>({
               httpLog(errorString)
               throw new Error(errorString)
             }
-            if(data.options?.resultFieldModifier && data.options.resultFieldModifier[title] && data.options.resultFieldModifier[title][path]){
-              responseBody = data.options.resultFieldModifier[title][path](responseBody);
+
+            if(data.options?.customizeHandlers[title][path].customizeResponseBody && typeof data.options?.customizeHandlers[title][path].customizeResponseBody === 'function'){
+              responseBody = data.options.customizeHandlers[title][path].customizeResponseBody(responseBody);
             }
             resolveData.responseHeaders = {}
             response.headers.forEach((val, key) => {

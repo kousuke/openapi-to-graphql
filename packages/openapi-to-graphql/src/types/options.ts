@@ -339,11 +339,18 @@ export type InternalOptions<TSource, TContext, TArgs> = {
    */
   equivalentToMessages: boolean
 
-  resultFieldModifier?: {
+  customizeHandlers?:{
     [title: string]: {
-        [path: string]: (responseBody:any) =>  any;
-    }
-  };
+      [path: string]: {
+        // hide this query or mutation endpoint
+        hide?: boolean,
+        // customize url and options
+        beforeFetch?: ({url: URL, options: RequestInit}) => {url: URL, options: RequestInit};
+        // customize response body. Unfortunately this can't add/remove fields
+        customizeResponseBody?: (responseBody:any) =>  any;
+      }
+  }
+  }
   /**
    * Custom W3 Compatible `fetch` implementation
    */

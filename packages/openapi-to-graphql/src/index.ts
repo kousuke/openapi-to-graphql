@@ -197,7 +197,7 @@ export function translateOpenAPIToGraphQL<TSource, TContext, TArgs>(
     baseUrl,
     customResolvers,
     customSubscriptionResolvers,
-    resultFieldModifier,
+    customizeHandlers,
 
     // Authentication options
     viewer,
@@ -239,7 +239,7 @@ export function translateOpenAPIToGraphQL<TSource, TContext, TArgs>(
     baseUrl,
     customResolvers,
     customSubscriptionResolvers,
-    resultFieldModifier,
+    customizeHandlers,
 
     // Authentication options
     viewer,
@@ -296,25 +296,32 @@ export function translateOpenAPIToGraphQL<TSource, TContext, TArgs>(
   // Add Query and Mutation fields
   Object.entries(data.operations).forEach(([operationId, operation]) => {
     translationLog(`Process operation '${operation.operationString}'...`)
-    // Check if the operation should be added as a Query or Mutation
-    if (operation.operationType === GraphQLOperationType.Query) {
-      addQueryFields({
-        authQueryFields,
-        queryFields,
-        operationId,
-        operation,
-        options,
-        data
-      })
-    } else if (operation.operationType === GraphQLOperationType.Mutation) {
-      addMutationFields({
-        authMutationFields,
-        mutationFields,
-        operationId,
-        operation,
-        options,
-        data
-      })
+
+    if(customizeHandlers && 
+      customizeHandlers[operation.oas.info.title] && 
+      customizeHandlers[operation.oas.info.title][operation.path] && 
+      customizeHandlers[operation.oas.info.title][operation.path].hide === true){  
+    }else{
+      // Check if the operation should be added as a Query or Mutation
+      if (operation.operationType === GraphQLOperationType.Query) {
+        addQueryFields({
+          authQueryFields,
+          queryFields,
+          operationId,
+          operation,
+          options,
+          data
+        })
+      } else if (operation.operationType === GraphQLOperationType.Mutation) {
+        addMutationFields({
+          authMutationFields,
+          mutationFields,
+          operationId,
+          operation,
+          options,
+          data
+        })
+      }
     }
   })
 
