@@ -339,6 +339,7 @@ export type InternalOptions<TSource, TContext, TArgs> = {
    */
   equivalentToMessages: boolean
 
+  handleHeadersAsArg?: boolean
   customizeHandlers?:{
     [title: string]: {
       [path: string]: {

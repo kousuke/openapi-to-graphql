@@ -1177,6 +1177,8 @@ export function getArgs<TSource, TContext, TArgs>({
 }: GetArgsParams<TSource, TContext, TArgs>): Args {
   let args = {}
 
+  const handleHeadersAsArg = !!data.options.handleHeadersAsArg
+
   // Handle params:
   parameters.forEach((parameter) => {
     // We need at least a name
@@ -1194,6 +1196,10 @@ export function getArgs<TSource, TContext, TArgs>({
 
     // If this parameter is provided via options, ignore
     if (skipArg(parameter, operation, data)) {
+      return
+    }
+
+    if(!handleHeadersAsArg && parameter.in === 'header'){
       return
     }
 
