@@ -7,6 +7,7 @@
 import { GraphQLOperationType, SubscriptionContext } from './graphql'
 import { GraphQLFieldResolver, GraphQLResolveInfo } from 'graphql'
 import crossFetch from 'cross-fetch'
+import { url } from 'inspector'
 
 /**
  * Type definition of the options that users can pass to OpenAPI-to-GraphQL.
@@ -346,7 +347,7 @@ export type InternalOptions<TSource, TContext, TArgs> = {
         // hide this query or mutation endpoint
         hide?: boolean,
         // customize url and options
-        beforeFetch?: ({url: URL, options: RequestInit}) => {url: URL, options: RequestInit};
+        beforeFetch?: ({url, options} : {url: URL, options: RequestInit | undefined}) => {url: URL, options?: RequestInit| undefined};
         // customize response body. Unfortunately this can't add/remove fields
         customizeResponseBody?: (responseBody:any) =>  any;
       }
