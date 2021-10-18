@@ -12,6 +12,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "importHelpers": true,
+    "sourceMap": true,
     "paths": {
       "openapi-to-graphql": ["packages/openapi-to-graphql/src/index.ts"],
       "openapi-to-graphql-cli": ["packages/openapi-to-graphql-cli/src/index.ts"]
