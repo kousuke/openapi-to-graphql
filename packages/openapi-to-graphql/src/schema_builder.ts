@@ -684,7 +684,7 @@ function createFields<TSource, TContext, TArgs>({
             `conflicts with another field named "${extensionFieldName}".`
         )
       }
-
+      console.log(data.options.simpleNames)
       const saneFieldName =
         extensionFieldName ||
         Oas3Tools.sanitize(
@@ -1199,9 +1199,9 @@ export function getArgs<TSource, TContext, TArgs>({
       return
     }
 
-    // if(!handleHeadersAsArg && parameter.in === 'header'){
-    //   continue;
-    // }
+    if(!handleHeadersAsArg && parameter.in === 'header'){
+      return;
+    }
     
 
     /**
